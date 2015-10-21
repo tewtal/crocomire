@@ -8,6 +8,7 @@ Requires the following Flask addons to be installed:
   * Flask-WTForms
 
 Configuration settings needs to be set in the "crocomire/settings.py" file.
+
 If using WSGI then edit "crocomire.wsgi" and set the correct path.
 
 Database migrations are done using the "manage.py" script in the root directory of the app, for example:
