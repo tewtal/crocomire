@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block body %}
+<div>
+	<table class="table table-hover strat-table" style="border-collapse:collapse;">
+		<thead>
+			<tr>
+				<th>Area</th>
+				<th>Room</th>
+				<th>Category</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Difficulty</th>
+				<th>Video</th>
+				{% if g.user %}
+				<th></th>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+		    {% for strat in strats %}
+			<tr>
+				<td><a href="/?a={{ strat.area.id }}">{{ strat.area.name }}</a></td>
+				<td>{% if strat.room.link %}<a target="_blank" href="{{ strat.room.link }}"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a> {% endif %}<a href="/?r={{ strat.room.id }}">{{ strat.room.name }}</a></td>
+				<td><a href="/?c={{ strat.category.id }}">{{ strat.category.name }}</a></td>
+				<td><a href="/{{ strat.id }}">{{ strat.name }}</a></td>
+				<td><a data-toggle="collapse" data-target="#expand-info-{{ strat.id }}" class="btn btn-default btn-xs accordion-toggle" href="#" style="color: #FFFFFF;">Show</a></td>
+				<td><span class="label label-{{ strat.get_difficulty_color() }}">{{ strat.get_difficulty_name() }}</span></td>
+				<td><a target="_blank" href="{{ strat.link }}">Video</a></td>
+				{% if g.user %}
+				<td>
+					{% if g.user.id == strat.id or 'm' in g.user.flags %}
+					<a href="/strats/edit/{{strat.id}}"><span class="glyphicon glyphicon-edit text-success" aria-hidden="true"></span></a>					
+					<a href="/strats/delete/{{strat.id}}"><span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></a>
+					{% endif %}
+				</td>
+				{% endif %}
+			</tr>
+			<tr>
+				<td colspan="{{ "7" if not g.user else "8" }}" style="padding: 0 !important;">
+				<div class="panel panel-default accordion-body collapse out" id="expand-info-{{ strat.id }}">
+					<div class="panel-body row">
+						<div class="col-md-6">{{ strat.description|replace('\n', '<br/>')|safe }}</div>
+						<div class="col-md-6">
+							<div class="embed-responsive embed-responsive-16by9" data-embedlink="{{ strat.get_embed() }}"></div>
+						</div>
+					</div>
+				</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	$('.collapse').on('show.bs.collapse', function () {
+	    $('.collapse.in').collapse('hide');
+		var el = $(this).find("div .embed-responsive");
+		if(el.html() == '')
+		{
+			var link = el.attr('data-embedlink');
+			if(link.indexOf('auto_play') > -1)
+			{
+				el.append('<object type="application/x-shockwave-flash" data="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="//www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf" /><param name="flashvars" value="' + link + '" /></object>');
+			}
+			else
+			{
+				el.append('<iframe class="embed-responsive-item" src="' + link + '" allowfullscreen></iframe>');
+			}
+		}
+	});
+
+
+</script>
+{% endblock %}
+

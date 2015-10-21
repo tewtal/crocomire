@@ -1,0 +1,80 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+{% block css %}
+<link href="/static/css/bootstrap-select.min.css" rel="stylesheet">
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+	$("#game_select").change(function() {
+		var opt_id = $(this).find(":selected").val();
+		var request_areas = $.getJSON('/api/areas/' + opt_id,
+			function(data) {
+				$("#area_select").empty();
+				for(var i=0; i < data.values.length; i++)
+					$("#area_select").append($("<option></option>").attr("value", data.values[i][0]).text(data.values[i][1]));
+				$("#area_select").selectpicker('refresh');
+			}
+		);
+	});
+	
+	$("#area_select").change(function() {
+		var opt_id = $(this).find(":selected").val();
+		var request = $.getJSON('/api/rooms/' + opt_id,
+			function(data) {
+				$("#room_select").empty();
+				for(var i=0; i < data.values.length; i++)
+					$("#room_select").append($("<option></option>").attr("value", data.values[i][0]).text(data.values[i][1]));
+				if(data.values.length > 1)
+				{
+					$("#room_select").val(data.values[1][0]);
+					$("#new_room").addClass('hidden');
+				}
+				else
+					$("#new_room").removeClass('hidden');
+				
+				$("#room_select").selectpicker('refresh');
+			}
+		);
+	});
+
+	$("#room_select").change(function() {
+		if($(this).val() == -1)	
+			$("#new_room").removeClass('hidden');
+		else
+			$("#new_room").addClass('hidden');
+
+	});
+</script>
+{% endblock %}
+
+{% block body %}
+<form class="form form-horizontal" method="post" role="form">
+	{{ form.hidden_tag() }}
+	{{ render_field(form.game, id="game_select", class_="selectpicker form-control") }}
+	{{ render_field(form.area, id="area_select", class_="selectpicker form-control") }}
+	{{ render_field(form.room, id="room_select", class_="selectpicker form-control") }}
+	
+	<div class="hidden" id="new_room">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{ render_field(form.new_roomname, class_="form-control") }}
+				{{ render_field(form.new_roomlink, class_="form-control") }}
+			</div>
+		</div>
+	</div>
+
+	{{ render_field(form.categories, class_="selectpicker form-control") }}
+	{{ render_field(form.name, class_="form-control") }}
+	{{ render_field(form.description, class_="form-control", rows="5") }}
+	{{ render_field(form.difficulty, class_="form-control selectpicker") }}
+	{{ render_field(form.video, class_="form-control") }}
+
+	<div class="form-group">
+		<div class="col-xs-3"></div>
+		<div class="col-xs-2">
+			<button class="btn btn-default btn-primary btn-block" type="submit">Submit</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

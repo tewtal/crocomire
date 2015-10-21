@@ -1,0 +1,46 @@
+body 
+{
+	padding-top: 50px;
+}
+
+.main-content 
+{
+	padding: 45px 10px;
+}
+
+.strat-table a
+{
+	color: inherit;
+}
+
+.strat-table a:hover
+{
+	color: #3399F3;
+	text-decoration: none;
+}
+
+.form-login
+{
+	max-width: 330px;
+	padding: 15px;
+	margin:0 auto;
+}
+
+.form-login .checkbox
+{
+	margin-bottom: 10px;
+	font-weight: normal;
+	margin-left: 20px;
+}
+
+.form-login .form-control
+{
+	position: relative;
+	height: auto;
+	 -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+		     box-sizing: border-box;
+	padding: 10px;
+	font-size: 16px;
+	margin-bottom: 10px;
+}

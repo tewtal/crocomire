@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+  <form action="" method=post class="form-login">
+    <h2>Log in to Crocomire</h2>
+	<label for="username" class="sr-only">Username</label>
+	<input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+	<label for="password" class="sr-only">Password></label>
+	<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+	<div class="checkbox"
+		<label>
+			<input type="checkbox" value="remember_me" name="remember_me">Remember me
+		</label>
+	</div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  </form>
+{% endblock %}
