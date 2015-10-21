@@ -25,7 +25,7 @@
 				<td><a href="/{{ strat.id }}">{{ strat.name }}</a></td>
 				<td><a data-toggle="collapse" data-target="#expand-info-{{ strat.id }}" class="btn btn-default btn-xs accordion-toggle" href="#" style="color: #FFFFFF;">Show</a></td>
 				<td><span class="label label-{{ strat.get_difficulty_color() }}">{{ strat.get_difficulty_name() }}</span></td>
-				<td><a target="_blank" href="{{ strat.link }}">Video</a></td>
+				<td>{% if strat.link %}<a target="_blank" href="{{ strat.link }}">Video</a>{% else %}None{% endif %}</td>
 				{% if g.user %}
 				<td>
 					{% if g.user.id == strat.id or 'm' in g.user.flags %}
