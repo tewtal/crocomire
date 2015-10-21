@@ -30,7 +30,7 @@
 				<td>
 					{% if g.user.id == strat.id or 'm' in g.user.flags %}
 					<a href="/strats/edit/{{strat.id}}"><span class="glyphicon glyphicon-edit text-success" aria-hidden="true"></span></a>					
-					<a href="/strats/delete/{{strat.id}}"><span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></a>
+					<a class="delete-strat" href="/strats/delete/{{strat.id}}"><span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span></a>
 					{% endif %}
 				</td>
 				{% endif %}
@@ -55,6 +55,15 @@
 
 {% block scripts %}
 <script type="text/javascript">
+	$('.delete-strat').click(function(event) {
+		event.preventDefault();
+		var r = confirm("Are you sure you want to delete this strategy?");
+		if(r == true)
+		{
+			window.location = $(this).attr('href');
+		}
+	});
+
 	$('.collapse').on('show.bs.collapse', function () {
 	    $('.collapse.in').collapse('hide');
 		var el = $(this).find("div .embed-responsive");
